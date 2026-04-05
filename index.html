@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="bn">
   <!--
-    Project: Meat Calculator v0.1
-  ‌	Author: Md. Mamun Hossen
-    -->
+  Project: Meat Calculator v0.1
+  Author: Mamun Hossen 
+  Github: https://github.com/mamunhossen-dev
+  -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>গবাদি পশুর মাংস হিসাব</title>
+<title>গবাদি পশুর ওজন ও মাংস ক্যালকুলেটর</title>
 
 <style>
-/* গ্লোবাল বক্স সাইজিং */
-* {
-    box-sizing: border-box; 
-}
+* { box-sizing: border-box; }
 
 body {
     font-family: "Noto Sans Bengali", Arial, sans-serif;
@@ -31,6 +29,7 @@ body {
     text-align: center;
     font-size: 22px;
     font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .container {
@@ -48,12 +47,9 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-label {
-    font-weight: bold;
-    margin-top: 15px;
-    display: block;
-    color: #333;
-}
+h3 { color: #1b5e20; margin-top: 0; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+
+label { font-weight: bold; margin-top: 15px; display: block; color: #333; font-size: 14px; }
 
 select, input, button {
     width: 100%;
@@ -65,6 +61,16 @@ select, input, button {
     font-family: inherit;
 }
 
+input:focus { border-color: #2e7d32; outline: none; background: #f9fff9; }
+
+.measurement-box {
+    background: #f1f8e9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 1px dashed #2e7d32;
+}
+
 button {
     background: #2e7d32;
     color: white;
@@ -73,12 +79,10 @@ button {
     margin-top: 20px;
     cursor: pointer;
     font-weight: bold;
-    transition: background 0.3s;
+    transition: 0.3s;
 }
 
-button:hover {
-    background: #145a1f;
-}
+button:hover { background: #145a1f; transform: translateY(-2px); }
 
 .result, .advice {
     margin-top: 20px;
@@ -87,19 +91,13 @@ button:hover {
     padding: 18px;
     border-radius: 10px;
     display: none;
+    animation: fadeIn 0.5s ease;
 }
 
-.result {
-    background: #e8f5e9;
-    color: #1b5e20;
-    border-left: 5px solid #2e7d32;
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-.advice {
-    background: #fff3e0;
-    color: #444;
-    border-left: 5px solid #ef6c00;
-}
+.result { background: #e8f5e9; color: #1b5e20; border-left: 5px solid #2e7d32; }
+.advice { background: #fff3e0; color: #444; border-left: 5px solid #ef6c00; }
 
 .footer {
     text-align: center;
@@ -107,13 +105,6 @@ button:hover {
     background: #ffffff;
     border-top: 1px solid #e0e6ed;
     margin-top: 40px;
-}
-
-.footer-text {
-    font-size: 14px;
-    color: #7f8c8d;
-    margin-bottom: 15px;
-    font-weight: 500;
 }
 
 .more-tools-btn {
@@ -128,27 +119,23 @@ button:hover {
     font-weight: 700;
     border-radius: 12px;
     border: 2px solid #2e7d32;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: 0.4s;
 }
 
-.more-tools-btn:hover {
-    background: #2e7d32;
-    color: #ffffff;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.25);
-}
+.more-tools-btn:hover { background: #2e7d32; color: #ffffff; }
+
+.toggle-container { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; }
+input[type="checkbox"] { width: auto; margin: 0; }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-    🐄 গবাদি পশুর মাংস হিসাব
-</div>
+<div class="header">🐄 Meat Calculator</div>
 
 <div class="container">
     <div class="card">
+        <h3>১. পশুর তথ্য</h3>
         <label>পশু নির্বাচন করুন</label>
         <select id="animal">
             <option value="cow">গরু</option>
@@ -160,14 +147,30 @@ button:hover {
             <option value="deshi">দেশি মুরগি</option>
         </select>
 
-        <label>জীবিত ওজন (কেজি)</label>
-        <input type="number" id="weight" placeholder="যেমন: 100">
+        <div class="toggle-container" onclick="toggleMode()">
+            <input type="checkbox" id="useMeasure">
+            <span style="font-weight:bold; color:#2e7d32;">ওজন জানা নেই? মেপে বের করুন</span>
+        </div>
 
-        <label>প্রতি কেজি মাংসের বাজার দাম (ঐচ্ছিক)</label>
-        <input type="number" id="price" placeholder="যেমন: 750">
+        <div id="weightInput">
+            <label>জীবিত ওজন (কেজি)</label>
+            <input type="number" id="weight" placeholder="যেমন: 150">
+        </div>
 
-        <label>পশুর মোট ক্রয় মূল্য (ঐচ্ছিক)</label>
-        <input type="number" id="buyprice" placeholder="যেমন: 50000">
+        <div id="measureInput" class="measurement-box" style="display:none;">
+            <label>বেড়/বুকের ঘের (ইঞ্চি)</label>
+            <input type="number" id="girth" placeholder="বুকের চারপাশের মাপ">
+            <label>দৈর্ঘ্য (ইঞ্চি)</label>
+            <input type="number" id="length" placeholder="কাঁধ থেকে লেজের গোড়া">
+            <small style="color:#555; display:block; margin-top:5px;">* ফিতা দিয়ে বেড় এবং দৈর্ঘ্য ইঞ্চিতে মাপুন।</small>
+        </div>
+
+        <h3>২. আর্থিক তথ্য (ঐচ্ছিক)</h3>
+        <label>প্রতি কেজি মাংসের বাজার দাম</label>
+        <input type="number" id="price" placeholder="যেমন: 800">
+
+        <label>পশুর মোট ক্রয় মূল্য</label>
+        <input type="number" id="buyprice" placeholder="যেমন: 65000">
 
         <button onclick="calculate()">হিসাব করুন</button>
 
@@ -177,55 +180,73 @@ button:hover {
 </div>
 
 <footer class="footer">
-    <div class="footer-text">
-        সহজভাবে জীবিত ওজন থেকে মাংসের পরিমাণ হিসাব করুন | সঠিক বাজার বিশ্লেষণের অ্যাপ
-    </div>
-    <a href="https://mamunhossen-dev.github.io/tools" target="_blank" class="more-tools-btn">
+    <div style="color:#7f8c8d; margin-bottom:15px; font-size:14px;">নির্ভুল পশুর ওজন ও মাংসের বাজার বিশ্লেষণ টুল</div>
+    <a href="https://github.com/mamunhossen-dev" target="_blank" class="more-tools-btn">
         <span>🛠️</span> Find More Tools
     </a>
 </footer>
 
 <script>
+function toggleMode() {
+    let isChecked = document.getElementById("useMeasure").checked;
+    document.getElementById("weightInput").style.display = isChecked ? "none" : "block";
+    document.getElementById("measureInput").style.display = isChecked ? "block" : "none";
+}
+
 function calculate() {
     let animal = document.getElementById("animal").value;
-    let weight = parseFloat(document.getElementById("weight").value);
+    let useMeasure = document.getElementById("useMeasure").checked;
+    let weight = 0;
+
+    if (useMeasure) {
+        let girth = parseFloat(document.getElementById("girth").value);
+        let length = parseFloat(document.getElementById("length").value);
+        if (isNaN(girth) || isNaN(length) || girth <= 0 || length <= 0) {
+            alert("মাপগুলো সঠিকভাবে ইঞ্চিতে দিন!");
+            return;
+        }
+        // Shaeffer's Formula (Lbs to Kg)
+        weight = ((girth * girth * length) / 300) / 2.2046;
+    } else {
+        weight = parseFloat(document.getElementById("weight").value);
+        if (isNaN(weight) || weight <= 0) {
+            alert("দয়া করে পশুর ওজন ইনপুট দিন!");
+            return;
+        }
+    }
+
     let price = parseFloat(document.getElementById("price").value);
     let buyPrice = parseFloat(document.getElementById("buyprice").value);
 
-    if (isNaN(weight) || weight <= 0) {
-        alert("দয়া করে পশুর সঠিক ওজন দিন!");
-        return;
-    }
+    const animalRatios = {
+        cow: 0.55, buffalo: 0.52, goat: 0.48, sheep: 0.38,
+        duck: 0.65, broiler: 0.72, deshi: 0.65
+    };
+    const animalNames = {
+        cow: "গরু", buffalo: "মহিষ", goat: "ছাগল", sheep: "ভেড়া",
+        duck: "হাঁস", broiler: "ব্রয়লার মুরগি", deshi: "দেশি মুরগি"
+    };
 
-    let percent = 0;
-    let name = "";
-
-    if (animal === "cow") { percent = 0.52; name = "গরু"; }
-    else if (animal === "buffalo") { percent = 0.50; name = "মহিষ"; }
-    else if (animal === "goat") { percent = 0.35; name = "ছাগল"; }
-    else if (animal === "sheep") { percent = 0.38; name = "ভেড়া"; }
-    else if (animal === "duck") { percent = 0.60; name = "হাঁস"; }
-    else if (animal === "broiler") { percent = 0.68; name = "ব্রয়লার মুরগি"; }
-    else if (animal === "deshi") { percent = 0.65; name = "দেশি মুরগি"; }
-
+    let percent = animalRatios[animal];
+    let name = animalNames[animal];
     let meat = weight * percent;
     let totalValue = (!isNaN(price) && price > 0) ? meat * price : 0;
 
     let resultHTML = `
         <h3 style="margin-top:0; color:#1b5e20;">📊 হিসাবের সারাংশ</h3>
         📌 <b>পশু:</b> ${name}<br>
-        ⚖️ <b>জীবিত ওজন:</b> ${weight} কেজি<br>
-        🥩 <b>সম্ভাব্য মাংস:</b> <span style="font-size:18px; color:#2e7d32;"><b>${meat.toFixed(2)} কেজি</b></span> (প্রায় ${(percent*100)}%)<br>
+        ⚖️ <b>জীবিত ওজন:</b> ${weight.toFixed(2)} কেজি<br>
+        🥩 <b>সম্ভাব্য মাংস:</b> <span style="font-size:20px; color:#2e7d32;"><b>${meat.toFixed(2)} কেজি</b></span> (${(percent*100)}%)<br>
     `;
-
     if (totalValue > 0) {
-        resultHTML += `💰 <b>মাংসের বাজার মূল্য:</b> <b>${totalValue.toLocaleString()} টাকা</b>`;
+        resultHTML += `💰 <b>শুধু মাংসের মূল্য:</b> <b>${totalValue.toLocaleString()} টাকা</b>`;
     }
     
-    let resultBox = document.getElementById("result");
-    resultBox.innerHTML = resultHTML;
-    resultBox.style.display = "block";
+    let rBox = document.getElementById("result");
+    rBox.innerHTML = resultHTML;
+    rBox.style.display = "block";
 
+    // --- মজাদার পরামর্শ মেসেজগুলো এখানে ---
     let adviceHTML = "<h3 style='margin-top:0; color:#e65100;'>💡 বিশেষজ্ঞ পরামর্শ</h3>";
 
     if (!isNaN(buyPrice) && buyPrice > 0 && totalValue > 0) {
@@ -241,14 +262,14 @@ function calculate() {
             adviceHTML += `⚠️ <b>একটু ভাবুন!</b> শুধু মাংসের হিসেবে পকেট থেকে প্রায় <b>${Math.abs(difference).toLocaleString()} টাকা</b> বাড়তি যাচ্ছে। যদি পশুটি দেখতে খুব রাজকীয় হয়, তবে মনের শান্তির জন্য ঠিক আছে। নইলে বিক্রেতার সাথে আরেকটু 'কড়া' দরদাম করা উচিত ছিল!`;
         }
     } else if (totalValue > 0) {
-        adviceHTML += `আপনি যদি পশুটি কিনতে চান, তবে <b>${(totalValue - (totalValue*0.05)).toLocaleString()} থেকে ${totalValue.toLocaleString()} টাকার</b> মধ্যে কেনাটা হবে সবথেকে বুদ্ধিমানের কাজ।`;
+        adviceHTML += `পশুটি যদি <b>${(totalValue - (totalValue*0.05)).toLocaleString()} থেকে ${totalValue.toLocaleString()} টাকার</b> মধ্যে কিনতে পারেন, তবেই আপনি জিতবেন!`;
     } else {
         adviceHTML += "আরে! পকেটের লাভ-ক্ষতির হিসাব দেখতে দাম আর ক্রয়মূল্য তো দিলেন না। জাদুর বলে তো আর হিসাব হবে না! দয়া করে ওই ঘরগুলো পূরণ করুন।";
     }
 
-    let adviceBox = document.getElementById("advice");
-    adviceBox.innerHTML = adviceHTML;
-    adviceBox.style.display = "block";
+    let aBox = document.getElementById("advice");
+    aBox.innerHTML = adviceHTML;
+    aBox.style.display = "block";
 }
 </script>
 
