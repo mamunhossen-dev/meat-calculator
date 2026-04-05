@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="bn">
+  <!--
+    Project: Meat Calculator v0.1
+  ‌	Author: Md. Mamun Hossen
+    -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>গবাদি পশুর মাংস হিসাব</title>
+
+<style>
+/* গ্লোবাল বক্স সাইজিং */
+* {
+    box-sizing: border-box; 
+}
+
+body {
+    font-family: "Noto Sans Bengali", Arial, sans-serif;
+    margin: 0;
+    background: #f0f4f7;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    background: #1b5e20;
+    color: white;
+    padding: 18px 10px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 520px;
+    margin: 20px auto;
+    padding: 15px;
+    flex: 1;
+}
+
+.card {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+label {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+    color: #333;
+}
+
+select, input, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+button {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    font-size: 18px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #145a1f;
+}
+
+.result, .advice {
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.7;
+    padding: 18px;
+    border-radius: 10px;
+    display: none;
+}
+
+.result {
+    background: #e8f5e9;
+    color: #1b5e20;
+    border-left: 5px solid #2e7d32;
+}
+
+.advice {
+    background: #fff3e0;
+    color: #444;
+    border-left: 5px solid #ef6c00;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px 20px;
+    background: #ffffff;
+    border-top: 1px solid #e0e6ed;
+    margin-top: 40px;
+}
+
+.footer-text {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.more-tools-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    background: #f8fafc;
+    color: #2e7d32;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 12px;
+    border: 2px solid #2e7d32;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.more-tools-btn:hover {
+    background: #2e7d32;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.25);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    🐄 গবাদি পশুর মাংস হিসাব
+</div>
+
+<div class="container">
+    <div class="card">
+        <label>পশু নির্বাচন করুন</label>
+        <select id="animal">
+            <option value="cow">গরু</option>
+            <option value="buffalo">মহিষ</option>
+            <option value="goat">ছাগল</option>
+            <option value="sheep">ভেড়া</option>
+            <option value="duck">হাঁস</option>
+            <option value="broiler">ব্রয়লার মুরগি</option>
+            <option value="deshi">দেশি মুরগি</option>
+        </select>
+
+        <label>জীবিত ওজন (কেজি)</label>
+        <input type="number" id="weight" placeholder="যেমন: 100">
+
+        <label>প্রতি কেজি মাংসের বাজার দাম (ঐচ্ছিক)</label>
+        <input type="number" id="price" placeholder="যেমন: 750">
+
+        <label>পশুর মোট ক্রয় মূল্য (ঐচ্ছিক)</label>
+        <input type="number" id="buyprice" placeholder="যেমন: 50000">
+
+        <button onclick="calculate()">হিসাব করুন</button>
+
+        <div class="result" id="result"></div>
+        <div class="advice" id="advice"></div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-text">
+        সহজভাবে জীবিত ওজন থেকে মাংসের পরিমাণ হিসাব করুন | সঠিক বাজার বিশ্লেষণের অ্যাপ
+    </div>
+    <a href="https://github.com/mamunhossen-dev" target="_blank" class="more-tools-btn">
+        <span>🛠️</span> Find More Tools
+    </a>
+</footer>
+
+<script>
+function calculate() {
+    let animal = document.getElementById("animal").value;
+    let weight = parseFloat(document.getElementById("weight").value);
+    let price = parseFloat(document.getElementById("price").value);
+    let buyPrice = parseFloat(document.getElementById("buyprice").value);
+
+    if (isNaN(weight) || weight <= 0) {
+        alert("দয়া করে পশুর সঠিক ওজন দিন!");
+        return;
+    }
+
+    let percent = 0;
+    let name = "";
+
+    if (animal === "cow") { percent = 0.52; name = "গরু"; }
+    else if (animal === "buffalo") { percent = 0.50; name = "মহিষ"; }
+    else if (animal === "goat") { percent = 0.35; name = "ছাগল"; }
+    else if (animal === "sheep") { percent = 0.38; name = "ভেড়া"; }
+    else if (animal === "duck") { percent = 0.60; name = "হাঁস"; }
+    else if (animal === "broiler") { percent = 0.68; name = "ব্রয়লার মুরগি"; }
+    else if (animal === "deshi") { percent = 0.65; name = "দেশি মুরগি"; }
+
+    let meat = weight * percent;
+    let totalValue = (!isNaN(price) && price > 0) ? meat * price : 0;
+
+    let resultHTML = `
+        <h3 style="margin-top:0; color:#1b5e20;">📊 হিসাবের সারাংশ</h3>
+        📌 <b>পশু:</b> ${name}<br>
+        ⚖️ <b>জীবিত ওজন:</b> ${weight} কেজি<br>
+        🥩 <b>সম্ভাব্য মাংস:</b> <span style="font-size:18px; color:#2e7d32;"><b>${meat.toFixed(2)} কেজি</b></span> (প্রায় ${(percent*100)}%)<br>
+    `;
+
+    if (totalValue > 0) {
+        resultHTML += `💰 <b>মাংসের বাজার মূল্য:</b> <b>${totalValue.toLocaleString()} টাকা</b>`;
+    }
+    
+    let resultBox = document.getElementById("result");
+    resultBox.innerHTML = resultHTML;
+    resultBox.style.display = "block";
+
+    let adviceHTML = "<h3 style='margin-top:0; color:#e65100;'>💡 বিশেষজ্ঞ পরামর্শ</h3>";
+
+    if (!isNaN(buyPrice) && buyPrice > 0 && totalValue > 0) {
+        let difference = totalValue - buyPrice;
+        
+        if (difference > 5000) {
+            adviceHTML += `🥳 <b>জ্যাকপট!</b> আপনি তো বাজার কাঁপানো দামে কিনেছেন। শুধু মাংসের হিসেবেই আপনার <b>${difference.toLocaleString()} টাকা</b> সাশ্রয় হচ্ছে। টাকাগুলো দিয়ে বিরিয়ানির মশলা কিনে ফেলুন! এর ওপর চামড়া আর পায়া তো ফ্রি বোনাস!`;
+        } else if (difference > 0) {
+            adviceHTML += `✅ <b>বুদ্ধিমানের কাজ!</b> আপনি বাজার দরের চেয়ে বেশ লাভে আছেন (সাশ্রয়: <b>${difference.toLocaleString()} টাকা</b>)। এটি একটি লাভজনক ডিল। নিশ্চিন্তে এগুতে পারেন।`;
+        } else if (Math.abs(difference) < 2000) {
+            adviceHTML += `⚖️ <b>নিখুঁত দরদাম!</b> আপনার কেনা দাম আর মাংসের দাম প্রায় সমান। তবে টেনশন নেই, পশুর মাথার মাংস, ভুঁড়ি আর চামড়া বিক্রি করলে দিনশেষে আপনিই লাভে থাকবেন।`;
+        } else {
+            adviceHTML += `⚠️ <b>একটু ভাবুন!</b> শুধু মাংসের হিসেবে পকেট থেকে প্রায় <b>${Math.abs(difference).toLocaleString()} টাকা</b> বাড়তি যাচ্ছে। যদি পশুটি দেখতে খুব রাজকীয় হয়, তবে মনের শান্তির জন্য ঠিক আছে। নইলে বিক্রেতার সাথে আরেকটু 'কড়া' দরদাম করা উচিত ছিল!`;
+        }
+    } else if (totalValue > 0) {
+        adviceHTML += `আপনি যদি পশুটি কিনতে চান, তবে <b>${(totalValue - (totalValue*0.05)).toLocaleString()} থেকে ${totalValue.toLocaleString()} টাকার</b> মধ্যে কেনাটা হবে সবথেকে বুদ্ধিমানের কাজ।`;
+    } else {
+        adviceHTML += "আরে! পকেটের লাভ-ক্ষতির হিসাব দেখতে দাম আর ক্রয়মূল্য তো দিলেন না। জাদুর বলে তো আর হিসাব হবে না! দয়া করে ওই ঘরগুলো পূরণ করুন।";
+    }
+
+    let adviceBox = document.getElementById("advice");
+    adviceBox.innerHTML = adviceHTML;
+    adviceBox.style.display = "block";
+}
+</script>
+
+</body>
+</html>
