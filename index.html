@@ -540,7 +540,7 @@ function calculate() {
 
         // শতকরা অনুযায়ী কাস্টমাইজড মেসেজ (ছোট পশু বড় পশু সবাই সমান সুবিচার পাবে)
         if (diffPercent > 15) {
-            adviceHTML += `🥳 <b>জ্যাকপট!</b> আপনি তো বাজার কাঁপানো দামে কিনেছেন। ক্রয়মূল্যের তুলনায় আপনার <b>${diffPercent.toFixed(1)}%</b> সাশ্রয় হচ্ছে (প্রায় <b>${difference.toLocaleString()} টাকা</b>)। চামড়া-পায়া তো বোনাস!`;
+            adviceHTML += `🥳 <b>জ্যাকপট!</b> আপনি তো বাজার কাঁপানো দামে কিনেছেন। ক্রয়মূল্যের তুলনায় আপনার <b>${diffPercent.toFixed(1)}%</b> সাশ্রয় হচ্ছে (প্রায় <b>${difference.toLocaleString()} টাকা</b>)!`;
         } else if (diffPercent > 5) {
             adviceHTML += `✅ <b>বুদ্ধিমানের কাজ!</b> আপনি বাজার দরের চেয়ে <b>${diffPercent.toFixed(1)}%</b> লাভে আছেন (সাশ্রয়: <b>${difference.toLocaleString()} টাকা</b>)। ভালো ডিল, আপনি জিতছেন!`;
         } else if (diffPercent >= -3) {
