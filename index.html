@@ -553,7 +553,7 @@ function calculate() {
     } else if (totalValue > 0) {
         adviceHTML += `পশুটি যদি <b>${(totalValue - (totalValue*0.05)).toLocaleString()} থেকে ${totalValue.toLocaleString()} টাকার</b> মধ্যে কিনতে পারেন, তবেই আপনি জিতবেন!`;
     } else {
-        adviceHTML += "আরে! পকেটের লাভ-ক্ষতির হিসাব দেখতে দাম আর ক্রয়মূল্য তো দিলেন না। জাদুর বলে তো আর হিসাব হবে না! দয়া করে ওই ঘরগুলো পূরণ করুন।";
+        adviceHTML += "আরে! লাভ-ক্ষতির হিসাব দেখতে দাম আর ক্রয়মূল্য তো দিলেন না। জাদুর বলে তো আর হিসাব হবে না! দয়া করে ওই ঘরগুলো পূরণ করুন।";
     }
 
     document.getElementById("advice").innerHTML = adviceHTML;
