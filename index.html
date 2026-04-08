@@ -275,13 +275,13 @@ function calculate() {
         if (diffPercent > 15) {
             adviceHTML += `🥳 <b>জ্যাকপট!</b> আপনি তো বাজার কাঁপানো দামে কিনেছেন। ক্রয়মূল্যের তুলনায় আপনার <b>${diffPercent.toFixed(1)}%</b> সাশ্রয় হচ্ছে (প্রায় <b>${difference.toLocaleString()} টাকা</b>)। চামড়া-পায়া তো বোনাস!`;
         } else if (diffPercent > 5) {
-            adviceHTML += `✅ <b>বুদ্ধিমানের কাজ!</b> আপনি বাজার দরের চেয়ে <b>${diffPercent.toFixed(1)}%</b> লাভে আছেন (সাশ্রয়: <b>${difference.toLocaleString()} টাকা</b>)। ভালো ডিল।`;
+            adviceHTML += `✅ <b>বুদ্ধিমানের কাজ!</b> আপনি বাজার দরের চেয়ে <b>${diffPercent.toFixed(1)}%</b> লাভে আছেন (সাশ্রয়: <b>${difference.toLocaleString()} টাকা</b>)। ভালো ডিল, আপনি জিতছেন!`;
         } else if (diffPercent >= -3) {
-            adviceHTML += `⚖️ <b>নিখুঁত দরদাম!</b> আপনার কেনা দাম আর মাংসের দাম প্রায় সমান (পার্থক্য: <b>${diffPercent.toFixed(1)}%</b>)। তবে টেনশন নেই, চামড়া আর ভুঁড়ি বিক্রি করলে আপনিই লাভে থাকবেন।`;
+            adviceHTML += `⚖️ <b>নিখুঁত দরদাম!</b> আপনার কেনা দাম আর মাংসের দাম প্রায় সমান (পার্থক্য: <b>${diffPercent.toFixed(1)}%</b>)। তবে টেনশন নেই, হাটে গিয়ে কিনে আনার সময় রাস্তায় যে বিশাল ভাবটা নিতে পেরেছেন, সেটার দাম হিসাব করলে দিনশেষে আপনিই লাভে আছেন!`;
         } else if (diffPercent >= -10) {
             adviceHTML += `⚠️ <b>একটু ভাবুন!</b> বাজার দরের তুলনায় প্রায় <b>${Math.abs(diffPercent).toFixed(1)}%</b> বাড়তি যাচ্ছে (<b>${Math.abs(difference).toLocaleString()} টাকা</b>)। যদি পশুটি অসাধারণ হয় তবেই কিনুন।`;
         } else {
-            adviceHTML += `🔴 <b>সতর্কতা!</b> ক্রয়মূল্য বাজার দরের চেয়ে <b>${Math.abs(diffPercent).toFixed(1)}%</b> বেশি। এটি একটি ক্ষতির ডিল হতে পারে যদি না পশুটি বিশেষ প্রজাতির হয়।`;
+            adviceHTML += `🔴 <b>সতর্কতা!</b> ক্রয়মূল্য বাজার দরের চেয়ে <b>${Math.abs(diffPercent).toFixed(1)}%</b> বেশি। হিসাব তো বলছে এই ডিলে আপনি ধরা খেয়েছেন! এখন এই লস কভার করতে চাইলে পশুটাকে নিয়ে ইউটিউবে একটা হিট ভ্লগ বানানো ছাড়া আর কোনো উপায় দেখছি না।।`;
         }
     } else if (totalValue > 0) {
         adviceHTML += `পশুটি যদি <b>${(totalValue - (totalValue*0.05)).toLocaleString()} থেকে ${totalValue.toLocaleString()} টাকার</b> মধ্যে কিনতে পারেন, তবেই আপনি জিতবেন!`;
