@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="bn">
   <!--
-  Project: Meat Calculator v0.1
+  Project: Meat Calculator v0.3 (Percentage-based Advice)
   Author: Mamun Hossen 
   Github: https://github.com/mamunhossen-dev
   -->
@@ -227,11 +227,24 @@ function calculate() {
         duck: "হাঁস", broiler: "ব্রয়লার মুরগি", deshi: "দেশি মুরগি"
     };
 
+    // পশু-ভিত্তিক টিপস
+    const animalTips = {
+        cow: "🐄 গরুর জাত ও বয়সের ওপর মাংসের পরিমাণ নির্ভর করে। শাহিওয়াল, ফ্রিজিয়ান গরুতে মাংস বেশি হয়।",
+        buffalo: "🐃 মহিষের ওজন বেশি হলেও হাড় ভারী, তাই মাংসের অনুপাত ঈষৎ কম। তবে এর দুধ আর ঘি তো আছেই!",
+        goat: "🐐 ছাগলের মাংস দামি আর পুষ্টিকর। ব্ল্যাক বেঙ্গল ছাগলে হাড় পাতলা হয়, ফলে মাংসের অনুপাত একটু বাড়ে।",
+        sheep: "🐑 ভেড়ার মাংসে আলাদা একটা ফ্লেভার আছে। কোরবানির বাজারে এর কদর বাড়ছে।",
+        duck: "🦆 হাঁসের মাংসে চামড়ার নিচে চর্বি থাকে, তাই রান্নায় তেল কম লাগে।",
+        broiler: "🐔 ব্রয়লার মুরগি অল্প সময়ে বড় হয়, মাংস নরম ও তাড়াতাড়ি সেদ্ধ হয়।",
+        deshi: "🐓 দেশি মুরগির স্বাদ অতুলনীয়! তবে হাড়ের পরিমাণ একটু বেশি – ধৈর্য ধরে খেতে হয়।"
+    };
+
     let percent = animalRatios[animal];
     let name = animalNames[animal];
+    let tip = animalTips[animal];
     let meat = weight * percent;
     let totalValue = (!isNaN(price) && price > 0) ? meat * price : 0;
 
+    // ফলাফল বক্স
     let resultHTML = `
         <h3 style="margin-top:0; color:#1b5e20;">📊 হিসাবের সারাংশ</h3>
         📌 <b>পশু:</b> ${name}<br>
@@ -242,24 +255,33 @@ function calculate() {
         resultHTML += `💰 <b>শুধু মাংসের মূল্য:</b> <b>${totalValue.toLocaleString()} টাকা</b>`;
     }
     
-    let rBox = document.getElementById("result");
-    rBox.innerHTML = resultHTML;
-    rBox.style.display = "block";
+    document.getElementById("result").innerHTML = resultHTML;
+    document.getElementById("result").style.display = "block";
 
-    // --- মজাদার পরামর্শ মেসেজগুলো এখানে ---
+    // --- পরামর্শ সেকশন (শতকরা হারে পার্থক্য) ---
     let adviceHTML = "<h3 style='margin-top:0; color:#e65100;'>💡 বিশেষজ্ঞ পরামর্শ</h3>";
+    adviceHTML += `<p style="background:#fff9e6; padding:8px; border-radius:8px; margin-bottom:15px;">📋 ${tip}</p>`;
 
+    if (useMeasure) {
+        adviceHTML += `<p style="color:#bf360c;">⚠️ মাপ থেকে ওজন আনুমানিক, ±৫% তারতম্য হতে পারে।</p>`;
+    }
+
+    // আর্থিক বিশ্লেষণ - এখন শতকরা হিসাবে
     if (!isNaN(buyPrice) && buyPrice > 0 && totalValue > 0) {
         let difference = totalValue - buyPrice;
-        
-        if (difference > 5000) {
-            adviceHTML += `🥳 <b>জ্যাকপট!</b> আপনি তো বাজার কাঁপানো দামে কিনেছেন। শুধু মাংসের হিসেবেই আপনার <b>${difference.toLocaleString()} টাকা</b> সাশ্রয় হচ্ছে। টাকাগুলো দিয়ে বিরিয়ানির মশলা কিনে ফেলুন! এর ওপর চামড়া আর পায়া তো ফ্রি বোনাস!`;
-        } else if (difference > 0) {
-            adviceHTML += `✅ <b>বুদ্ধিমানের কাজ!</b> আপনি বাজার দরের চেয়ে বেশ লাভে আছেন (সাশ্রয়: <b>${difference.toLocaleString()} টাকা</b>)। এটি একটি লাভজনক ডিল। নিশ্চিন্তে এগুতে পারেন।`;
-        } else if (Math.abs(difference) < 2000) {
-            adviceHTML += `⚖️ <b>নিখুঁত দরদাম!</b> আপনার কেনা দাম আর মাংসের দাম প্রায় সমান। তবে টেনশন নেই, পশুর মাথার মাংস, ভুঁড়ি আর চামড়া বিক্রি করলে দিনশেষে আপনিই লাভে থাকবেন।`;
+        let diffPercent = (difference / buyPrice) * 100; // লাভ/ক্ষতির শতকরা হার
+
+        // শতকরা অনুযায়ী কাস্টমাইজড মেসেজ (ছোট পশু বড় পশু সবাই সমান সুবিচার পাবে)
+        if (diffPercent > 15) {
+            adviceHTML += `🥳 <b>জ্যাকপট!</b> আপনি তো বাজার কাঁপানো দামে কিনেছেন। ক্রয়মূল্যের তুলনায় আপনার <b>${diffPercent.toFixed(1)}%</b> সাশ্রয় হচ্ছে (প্রায় <b>${difference.toLocaleString()} টাকা</b>)। চামড়া-পায়া তো বোনাস!`;
+        } else if (diffPercent > 5) {
+            adviceHTML += `✅ <b>বুদ্ধিমানের কাজ!</b> আপনি বাজার দরের চেয়ে <b>${diffPercent.toFixed(1)}%</b> লাভে আছেন (সাশ্রয়: <b>${difference.toLocaleString()} টাকা</b>)। ভালো ডিল।`;
+        } else if (diffPercent >= -3) {
+            adviceHTML += `⚖️ <b>নিখুঁত দরদাম!</b> আপনার কেনা দাম আর মাংসের দাম প্রায় সমান (পার্থক্য: <b>${diffPercent.toFixed(1)}%</b>)। তবে টেনশন নেই, চামড়া আর ভুঁড়ি বিক্রি করলে আপনিই লাভে থাকবেন।`;
+        } else if (diffPercent >= -10) {
+            adviceHTML += `⚠️ <b>একটু ভাবুন!</b> বাজার দরের তুলনায় প্রায় <b>${Math.abs(diffPercent).toFixed(1)}%</b> বাড়তি যাচ্ছে (<b>${Math.abs(difference).toLocaleString()} টাকা</b>)। যদি পশুটি অসাধারণ হয় তবেই কিনুন।`;
         } else {
-            adviceHTML += `⚠️ <b>একটু ভাবুন!</b> শুধু মাংসের হিসেবে পকেট থেকে প্রায় <b>${Math.abs(difference).toLocaleString()} টাকা</b> বাড়তি যাচ্ছে। যদি পশুটি দেখতে খুব রাজকীয় হয়, তবে মনের শান্তির জন্য ঠিক আছে। নইলে বিক্রেতার সাথে আরেকটু 'কড়া' দরদাম করা উচিত ছিল!`;
+            adviceHTML += `🔴 <b>সতর্কতা!</b> ক্রয়মূল্য বাজার দরের চেয়ে <b>${Math.abs(diffPercent).toFixed(1)}%</b> বেশি। এটি একটি ক্ষতির ডিল হতে পারে যদি না পশুটি বিশেষ প্রজাতির হয়।`;
         }
     } else if (totalValue > 0) {
         adviceHTML += `পশুটি যদি <b>${(totalValue - (totalValue*0.05)).toLocaleString()} থেকে ${totalValue.toLocaleString()} টাকার</b> মধ্যে কিনতে পারেন, তবেই আপনি জিতবেন!`;
@@ -267,9 +289,8 @@ function calculate() {
         adviceHTML += "আরে! পকেটের লাভ-ক্ষতির হিসাব দেখতে দাম আর ক্রয়মূল্য তো দিলেন না। জাদুর বলে তো আর হিসাব হবে না! দয়া করে ওই ঘরগুলো পূরণ করুন।";
     }
 
-    let aBox = document.getElementById("advice");
-    aBox.innerHTML = adviceHTML;
-    aBox.style.display = "block";
+    document.getElementById("advice").innerHTML = adviceHTML;
+    document.getElementById("advice").style.display = "block";
 }
 </script>
 
