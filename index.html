@@ -516,7 +516,7 @@ function calculate() {
         <h3 style="margin-top:0; color:#1b5e20;">📊 হিসাবের সারাংশ</h3>
         📌 <b>পশু:</b> ${name}<br>
         ⚖️ <b>জীবিত ওজন:</b> ${weight.toFixed(2)} কেজি<br>
-        🥩 <b>সম্ভাব্য মাংস:</b> <span style="font-size:22px; font-weight:800; color:#236b28;"><b>${meat.toFixed(2)} কেজি</b></span> (${(percent*100)}%)<br>
+        🥩 <b>সম্ভাব্য মাংস:</b> <span style="font-size:22px; font-weight:800; color:#236b28;"><b>${meat.toFixed(2)} কেজি</b></span><br>
     `;
     if (totalValue > 0) {
         resultHTML += `💰 <b>শুধু মাংসের মূল্য:</b> <b>${totalValue.toLocaleString()} টাকা</b>`;
