@@ -4,175 +4,441 @@
   Project: Meat Calculator v0.3 (Percentage-based Advice)
   Author: Mamun Hossen 
   Github: https://github.com/mamunhossen-dev
+  UI Enhancement: Modern & Joyful Design — No Logic Changes
   -->
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>গবাদি পশুর ওজন ও মাংস ক্যালকুলেটর</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>মাংস ক্যালকুলেটর | নির্ভুল ওজন ও বাজার বিশ্লেষণ</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; }
-
-body {
-    font-family: "Noto Sans Bengali", Arial, sans-serif;
+  * {
     margin: 0;
-    background: #f0f4f7;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', 'Noto Sans Bengali', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(145deg, #eef5ec 0%, #d9e6d4 100%);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-}
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    position: relative;
+  }
 
-.header {
-    background: #1b5e20;
-    color: white;
-    padding: 18px 10px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+  /* decorative soft background elements */
+  body::before {
+    content: "🐄";
+    font-size: 240px;
+    position: fixed;
+    bottom: -30px;
+    left: -60px;
+    opacity: 0.06;
+    pointer-events: none;
+    transform: rotate(-12deg);
+    z-index: 0;
+  }
 
-.container {
-    max-width: 520px;
-    margin: 20px auto;
-    padding: 15px;
-    flex: 1;
-}
+  body::after {
+    content: "🥩";
+    font-size: 200px;
+    position: fixed;
+    top: 10%;
+    right: -50px;
+    opacity: 0.06;
+    pointer-events: none;
+    transform: rotate(15deg);
+    z-index: 0;
+  }
 
-.card {
-    background: #ffffff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-h3 { color: #1b5e20; margin-top: 0; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px; }
-
-label { font-weight: bold; margin-top: 15px; display: block; color: #333; font-size: 14px; }
-
-select, input, button {
+  .container {
+    max-width: 580px;
     width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    font-family: inherit;
-}
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    animation: fadeSlideUp 0.6s ease-out;
+  }
 
-input:focus { border-color: #2e7d32; outline: none; background: #f9fff9; }
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-.measurement-box {
-    background: #f1f8e9;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 10px;
-    border: 1px dashed #2e7d32;
-}
-
-button {
-    background: #2e7d32;
+  /* header styling */
+  .header {
+    background: linear-gradient(105deg, #0f4c1f 0%, #1b6e2a 100%);
     color: white;
-    border: none;
-    font-size: 18px;
-    margin-top: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-button:hover { background: #145a1f; transform: translateY(-2px); }
-
-.result, .advice {
-    margin-top: 20px;
-    font-size: 16px;
-    line-height: 1.7;
-    padding: 18px;
-    border-radius: 10px;
-    display: none;
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-.result { background: #e8f5e9; color: #1b5e20; border-left: 5px solid #2e7d32; }
-.advice { background: #fff3e0; color: #444; border-left: 5px solid #ef6c00; }
-
-.footer {
     text-align: center;
-    padding: 30px 20px;
-    background: #ffffff;
-    border-top: 1px solid #e0e6ed;
-    margin-top: 40px;
-}
+    padding: 1.2rem 1.5rem;
+    border-radius: 48px;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(1px);
+    transition: all 0.2s;
+  }
 
-.more-tools-btn {
+  .header h1 {
+    font-size: 1.9rem;
+    letter-spacing: -0.3px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .header h1 span {
+    background: #ffd966cc;
+    padding: 4px 12px;
+    border-radius: 60px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1e3a2f;
+  }
+
+  /* main card */
+  .card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(0px);
+    border-radius: 2rem;
+    padding: 1.8rem 1.6rem;
+    box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.5);
+    transition: transform 0.25s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 30px 45px -14px rgba(0, 0, 0, 0.3);
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1e4620;
+    margin: 1rem 0 0.5rem 0;
+    border-left: 5px solid #2e7d32;
+    padding-left: 14px;
+    letter-spacing: -0.2px;
+  }
+
+  h3:first-of-type {
+    margin-top: 0;
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #2b4b2a;
+    margin-top: 1.2rem;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  select, input, button {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-radius: 1.25rem;
+    border: 1.5px solid #e2e8f0;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2rem;
+  }
+
+  input:focus, select:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.2);
+    background-color: #fefef7;
+  }
+
+  .toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ecf9e6;
+    padding: 0.8rem 1rem;
+    border-radius: 2rem;
+    margin: 1rem 0 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid #c5e0b4;
+  }
+
+  .toggle-container:hover {
+    background: #e2f2db;
+    border-color: #9bcd86;
+  }
+
+  .toggle-container span {
+    font-weight: 600;
+    color: #1b5e20;
+    font-size: 0.9rem;
+    letter-spacing: -0.2px;
+  }
+
+  input[type="checkbox"] {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: 0;
+    accent-color: #2e7d32;
+    cursor: pointer;
+  }
+
+  .measurement-box {
+    background: #fafcf7;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+    margin-top: 1rem;
+    border: 1px solid #d4e2ca;
+    box-shadow: inset 0 1px 3px #00000008, 0 4px 8px rgba(0,0,0,0.02);
+    transition: all 0.2s;
+  }
+
+  .measurement-box label {
+    margin-top: 0.6rem;
+  }
+
+  .measurement-box small {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.7rem;
+    background: #eef3e9;
+    padding: 6px 10px;
+    border-radius: 30px;
+    color: #2c5e2a;
+  }
+
+  button {
+    background: linear-gradient(100deg, #1f5e24, #2c7a32);
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    margin-top: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(30, 80, 20, 0.3);
+    transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  button:hover {
+    background: linear-gradient(100deg, #144e18, #206825);
+    transform: scale(1.01);
+    box-shadow: 0 10px 18px rgba(30, 80, 20, 0.4);
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .result, .advice {
+    margin-top: 1.5rem;
+    padding: 1.4rem 1.2rem;
+    border-radius: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.55;
+    display: none;
+    animation: cardPop 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    backdrop-filter: blur(2px);
+  }
+
+  @keyframes cardPop {
+    0% { opacity: 0; transform: translateY(12px) scale(0.96); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .result {
+    background: linear-gradient(125deg, #e9f7e6, #dff0da);
+    border-left: 6px solid #2e7d32;
+    color: #134b12;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+  }
+
+  .result h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.25rem;
+    border-left: 0;
+    padding-left: 0;
+    color: #1b5e20;
+  }
+
+  .advice {
+    background: #fff9ef;
+    border-left: 6px solid #ef6c00;
+    color: #3b2c1f;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+  }
+
+  .advice h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.2rem;
+    border-left: 0;
+    padding-left: 0;
+    color: #c75102;
+  }
+
+  /* custom spacing & inline highlights */
+  .result b, .advice b {
+    color: #1f5420;
+  }
+
+  .advice b {
+    color: #b45309;
+  }
+
+  /* footer section */
+  .footer {
+    text-align: center;
+    padding: 1.8rem 1rem 1rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(70, 80, 60, 0.15);
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .more-tools-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px 28px;
-    background: #f8fafc;
-    color: #2e7d32;
+    gap: 12px;
+    background: #ffffffdd;
+    backdrop-filter: blur(4px);
+    padding: 0.8rem 2rem;
+    border-radius: 60px;
+    color: #1d5e21;
     text-decoration: none;
-    font-size: 15px;
     font-weight: 700;
-    border-radius: 12px;
-    border: 2px solid #2e7d32;
-    transition: 0.4s;
-}
+    font-size: 0.9rem;
+    border: 1px solid #bcdbaa;
+    transition: all 0.25s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
 
-.more-tools-btn:hover { background: #2e7d32; color: #ffffff; }
+  .more-tools-btn:hover {
+    background: #2e7d32;
+    color: white;
+    border-color: #2e7d32;
+    transform: scale(1.02);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+  }
 
-.toggle-container { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; }
-input[type="checkbox"] { width: auto; margin: 0; }
+  /* responsive */
+  @media (max-width: 540px) {
+    .container {
+      padding: 0 0.2rem;
+    }
+    .card {
+      padding: 1.3rem;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+    }
+    h3 {
+      font-size: 1.25rem;
+    }
+    button {
+      padding: 0.8rem;
+    }
+  }
+
+  /* custom micro-interactions */
+  input[type="number"]::-webkit-inner-spin-button, 
+  input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.5;
+  }
+
+  .measurement-box input:focus {
+    border-color: #6fbf4c;
+  }
+
+  .footer > div:first-child {
+    font-size: 0.75rem;
+    color: #4e6b3e;
+    margin-bottom: 1rem;
+    letter-spacing: 0.3px;
+    font-weight: 500;
+  }
+
+  /* style for the animal select and price */
+  option {
+    font-weight: 500;
+  }
+
+  /* extra modern touches */
+  .card .toggle-container + div {
+    transition: 0.2s;
+  }
 </style>
 </head>
-
 <body>
 
-<div class="header">🐄 Meat Calculator</div>
+<div class="header">
+  <h1>🐄 Meat Calculator <span>মাংস ও বাজার মূল্যায়ন</span></h1>
+</div>
 
 <div class="container">
     <div class="card">
-        <h3>১. পশুর তথ্য</h3>
-        <label>পশু নির্বাচন করুন</label>
+        <h3>📌 ১. পশুর তথ্য</h3>
+        <label>🐾 পশু নির্বাচন করুন</label>
         <select id="animal">
-            <option value="cow">গরু</option>
-            <option value="buffalo">মহিষ</option>
-            <option value="goat">ছাগল</option>
-            <option value="sheep">ভেড়া</option>
-            <option value="duck">হাঁস</option>
-            <option value="broiler">ব্রয়লার মুরগি</option>
-            <option value="deshi">দেশি মুরগি</option>
+            <option value="cow">গরু (Cow)</option>
+            <option value="buffalo">মহিষ (Buffalo)</option>
+            <option value="goat">ছাগল (Goat)</option>
+            <option value="sheep">ভেড়া (Sheep)</option>
+            <option value="duck">হাঁস (Duck)</option>
+            <option value="broiler">ব্রয়লার মুরগি (Broiler)</option>
+            <option value="deshi">দেশি মুরগি (Deshi)</option>
         </select>
 
         <div class="toggle-container" onclick="toggleMode()">
             <input type="checkbox" id="useMeasure">
-            <span style="font-weight:bold; color:#2e7d32;">ওজন জানা নেই? মেপে বের করুন</span>
+            <span>📏 ওজন জানা নেই? মেপে বের করুন (ইঞ্চি)</span>
         </div>
 
         <div id="weightInput">
-            <label>জীবিত ওজন (কেজি)</label>
-            <input type="number" id="weight" placeholder="যেমন: 150">
+            <label>⚖️ জীবিত ওজন (কেজি)</label>
+            <input type="number" id="weight" placeholder="যেমন: 150 বা 2.5 (মুরগি/ছাগল)">
         </div>
 
         <div id="measureInput" class="measurement-box" style="display:none;">
-            <label>বেড়/বুকের ঘের (ইঞ্চি)</label>
-            <input type="number" id="girth" placeholder="বুকের চারপাশের মাপ">
-            <label>দৈর্ঘ্য (ইঞ্চি)</label>
-            <input type="number" id="length" placeholder="কাঁধ থেকে লেজের গোড়া">
-            <small style="color:#555; display:block; margin-top:5px;">* ফিতা দিয়ে বেড় এবং দৈর্ঘ্য ইঞ্চিতে মাপুন।</small>
+            <label>📐 বেড়/বুকের ঘের (ইঞ্চি)</label>
+            <input type="number" id="girth" placeholder="বুকের চারপাশের মাপ (ইঞ্চি)">
+            <label>📏 দৈর্ঘ্য (ইঞ্চি)</label>
+            <input type="number" id="length" placeholder="কাঁধ থেকে লেজের গোড়া (ইঞ্চি)">
+            <small>💡 ফিতা দিয়ে সঠিকভাবে মাপ নিন। সূত্র: (ঘের² × দৈর্ঘ্য) / 300 → পাউন্ড, তারপর কেজি</small>
         </div>
 
-        <h3>২. আর্থিক তথ্য (ঐচ্ছিক)</h3>
-        <label>প্রতি কেজি মাংসের বাজার দাম</label>
+        <h3>💰 ২. আর্থিক তথ্য (ঐচ্ছিক)</h3>
+        <label>🏷️ প্রতি কেজি মাংসের বাজার দাম (টাকা)</label>
         <input type="number" id="price" placeholder="যেমন: 800">
 
-        <label>পশুর মোট ক্রয় মূল্য</label>
+        <label>🛒 পশুর মোট ক্রয় মূল্য (টাকা)</label>
         <input type="number" id="buyprice" placeholder="যেমন: 65000">
 
-        <button onclick="calculate()">হিসাব করুন</button>
+        <button onclick="calculate()">✨ হিসাব করুন ✨</button>
 
         <div class="result" id="result"></div>
         <div class="advice" id="advice"></div>
@@ -180,13 +446,14 @@ input[type="checkbox"] { width: auto; margin: 0; }
 </div>
 
 <footer class="footer">
-    <div style="color:#7f8c8d; margin-bottom:15px; font-size:14px;">নির্ভুল পশুর ওজন ও মাংসের বাজার বিশ্লেষণ টুল</div>
+    <div>⚡ নির্ভুল পশুর ওজন ও মাংসের বাজার বিশ্লেষণ টুল | প্রতিটি কেনাবেচায় স্মার্ট সিদ্ধান্ত</div>
     <a href="https://mamunhossen-dev.github.io/tools/" target="_blank" class="more-tools-btn">
         <span>🛠️</span> Find More Tools
     </a>
 </footer>
 
 <script>
+// *************** UI ENHANCED — NO LOGIC CHANGE ***************
 function toggleMode() {
     let isChecked = document.getElementById("useMeasure").checked;
     document.getElementById("weightInput").style.display = isChecked ? "none" : "block";
@@ -249,7 +516,7 @@ function calculate() {
         <h3 style="margin-top:0; color:#1b5e20;">📊 হিসাবের সারাংশ</h3>
         📌 <b>পশু:</b> ${name}<br>
         ⚖️ <b>জীবিত ওজন:</b> ${weight.toFixed(2)} কেজি<br>
-        🥩 <b>সম্ভাব্য মাংস:</b> <span style="font-size:20px; color:#2e7d32;"><b>${meat.toFixed(2)} কেজি</b></span> (${(percent*100)}%)<br>
+        🥩 <b>সম্ভাব্য মাংস:</b> <span style="font-size:22px; font-weight:800; color:#236b28;"><b>${meat.toFixed(2)} কেজি</b></span> (${(percent*100)}%)<br>
     `;
     if (totalValue > 0) {
         resultHTML += `💰 <b>শুধু মাংসের মূল্য:</b> <b>${totalValue.toLocaleString()} টাকা</b>`;
@@ -260,10 +527,10 @@ function calculate() {
 
     // --- পরামর্শ সেকশন (শতকরা হারে পার্থক্য) ---
     let adviceHTML = "<h3 style='margin-top:0; color:#e65100;'>💡 বিশেষজ্ঞ পরামর্শ</h3>";
-    adviceHTML += `<p style="background:#fff9e6; padding:8px; border-radius:8px; margin-bottom:15px;">📋 ${tip}</p>`;
+    adviceHTML += `<p style="background:#fff3e0; padding:8px 12px; border-radius:1rem; margin-bottom:15px;">📋 ${tip}</p>`;
 
     if (useMeasure) {
-        adviceHTML += `<p style="color:#bf360c;">⚠️ মাপ থেকে ওজন আনুমানিক, ±৫% তারতম্য হতে পারে।</p>`;
+        adviceHTML += `<p style="color:#bf360c; font-size:0.85rem;">⚠️ মাপ থেকে ওজন আনুমানিক, ±৫% তারতম্য হতে পারে।</p>`;
     }
 
     // আর্থিক বিশ্লেষণ - এখন শতকরা হিসাবে
@@ -279,7 +546,7 @@ function calculate() {
         } else if (diffPercent >= -3) {
             adviceHTML += `⚖️ <b>নিখুঁত দরদাম!</b> আপনার কেনা দাম আর মাংসের দাম প্রায় সমান (পার্থক্য: <b>${diffPercent.toFixed(1)}%</b>)। তবে টেনশন নেই, হাটে গিয়ে কিনে আনার সময় রাস্তায় যে বিশাল ভাবটা নিতে পেরেছেন, সেটার দাম হিসাব করলে দিনশেষে আপনিই লাভে আছেন!`;
         } else if (diffPercent >= -10) {
-            adviceHTML += `⚠️ <b>একটু ভাবুন!</b> বাজার দরের তুলনায় প্রায় <b>${Math.abs(diffPercent).toFixed(1)}%</b> বাড়তি যাচ্ছে (<b>${Math.abs(difference).toLocaleString()} টাকা</b>)। যদি পশুটি অসাধারণ হয় তবেই কিনুন।`;
+            adviceHTML += `⚠️ <b>একটু ভাবুন!</b> বাজার দরের তুলনায় প্রায় <b>${Math.abs(diffPercent).toFixed(1)}%</b> বাড়তি যাচ্ছে (<b>${Math.abs(difference).toLocaleString()} টাকা</b>)। পশুটার মায়াবী চেহারা দেখে যদি সব দুঃখ ভুলে যান, তবেই কিনুন।।`;
         } else {
             adviceHTML += `🔴 <b>সতর্কতা!</b> ক্রয়মূল্য বাজার দরের চেয়ে <b>${Math.abs(diffPercent).toFixed(1)}%</b> বেশি। হিসাব তো বলছে এই ডিলে আপনি ধরা খেয়েছেন! এখন এই লস কভার করতে চাইলে পশুটাকে নিয়ে ইউটিউবে একটা হিট ভ্লগ বানানো ছাড়া আর কোনো উপায় দেখছি না।।`;
         }
